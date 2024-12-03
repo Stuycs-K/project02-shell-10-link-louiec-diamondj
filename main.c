@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <strings.h>
+#include <string.h>
 #include <unistd.h>
 #include <sys/wait.h>
 #include <fcntl.h>
@@ -14,6 +14,7 @@ int main(){
     sscanf(buffer, "%[^\n]", modBuff);
     char* args[16];
     parse_args(modBuff,args);
+    if(strcmp("exit",args[0])==0) exit(0);
     pid_t p = fork();
     if (p < 0) {
       perror("fork failed\n");
