@@ -17,6 +17,7 @@ int main(){
     parse_cmds(modBuff,cmds);
     for (int i = 0; cmds[i] != NULL; i++) {
       parse_args(cmds[i],args);
+      if(strcmp("exit",args[0])==0) exit(0);
       pid_t p = fork();
       if (p < 0) {
         perror("fork failed\n");
