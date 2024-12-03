@@ -8,10 +8,12 @@
 
 int main(){
   char buffer[256];
+  char modBuff[256];
   while (1) {
     fgets(buffer,255,stdin);
+    sscanf(buffer, "%[^\n]", modBuff);
     char* args[16];
-    parse_args(buffer,args);
+    parse_args(modBuff,args);
     pid_t p = fork();
     if (p < 0) {
       perror("fork failed\n");
