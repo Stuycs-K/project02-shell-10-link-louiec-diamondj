@@ -8,7 +8,7 @@
 void parse_args( char * line, char ** arg_ary ){
   int i = 0;
   while((arg_ary[i] = strsep(&line, " "))){
-    i++
+    i++;
   }
   arg_ary[i] = NULL;
 }
