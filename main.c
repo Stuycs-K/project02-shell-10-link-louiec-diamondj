@@ -12,6 +12,22 @@ int main(){
   char buffer[256];
   char modBuff[256];
   while (1) {
+    //Prompt
+    long path_max;
+    size_t size;
+    char *buf;
+    char *ptr;
+    path_max = pathconf(".", _PC_PATH_MAX);
+    if (path_max == -1){
+      size = 1024;
+    }else if (path_max > 10240){
+      size = 10240;
+    }else{
+      size = path_max;
+    }
+    ptr = getcwd(buf,size);
+    printf("%s/$ ",ptr);
+    //free(buf);
     fgets(buffer,255,stdin);
     sscanf(buffer, "%[^\n]", modBuff);
     char* cmds[16];
