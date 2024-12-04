@@ -24,6 +24,8 @@ int testStdinRedirect(char** args) {
 }
 
 void stdoutRedirect(char** args) {
+  int p = fork();
+
   int redirIndex = 0;
   while (strcmp(args[redirIndex],">") != 0) {
     redirIndex++;
