@@ -6,6 +6,8 @@
 #include <fcntl.h>
 #include "parse.h"
 
+void cd(char ** args);
+
 int main(){
   char buffer[256];
   char modBuff[256];
@@ -18,6 +20,10 @@ int main(){
     for (int i = 0; cmds[i] != NULL; i++) {
       parse_args(cmds[i],args);
       if(strcmp("exit",args[0])==0) exit(0);
+      if(strcmp("cd",args[0])==0){
+        cd(args);
+        continue;
+      }
       pid_t p = fork();
       if (p < 0) {
         perror("fork failed\n");
@@ -30,4 +36,14 @@ int main(){
     }
   }
   return 0;
+}
+//Takes an array of strings, returns void, and changes current directory
+void cd(char ** args){
+  const char * home = getenv("HOME");
+  if(args[1] == NULL){
+    chdir(home);
+  }
+  else{
+    chdir(args[1]);
+  }
 }
