@@ -8,6 +8,7 @@
 #include <time.h>
 #include <sys/types.h>
 #include <dirent.h>
+#include <sys/wait.h>
 
 int testStdoutRedirect(char** args) {
   for (int i = 0; args[i] != NULL; i++) {
@@ -25,17 +26,23 @@ int testStdinRedirect(char** args) {
 
 void stdoutRedirect(char** args) {
   int p = fork();
-
-  int redirIndex = 0;
-  while (strcmp(args[redirIndex],">") != 0) {
-    redirIndex++;
+  if (p < 0) {
+    perror("fork failed\n");
+  } else if (p == 0) {
+    int redirIndex = 0;
+    while (strcmp(args[redirIndex],">") != 0) {
+      redirIndex++;
+    }
+    printf("redirIndex = %d\n", redirIndex);
+    args[redirIndex] = NULL;
+    int fd1 = open(args[redirIndex + 1], O_WRONLY);
+    int stdout = STDOUT_FILENO;
+    int backup_stdout = dup(stdout);
+    dup2(fd1, stdout);
+    execvp(args[0], args);
+    dup2(backup_stdout, stdout);
+  } else {
+    int status;
+    wait(&status);
   }
-  printf("redirIndex = %d\n", redirIndex);
-  args[redirIndex] = NULL;
-  int fd1 = open(args[redirIndex + 1], O_WRONLY);
-  int stdout = STDOUT_FILENO;
-  int backup_stdout = dup(stdout);
-  dup2(fd1, stdout);
-  execvp(args[0], args);
-  dup2(backup_stdout, stdout);
 }
