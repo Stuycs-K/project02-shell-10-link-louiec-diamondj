@@ -7,12 +7,13 @@
 #include "parse.h"
 
 void cd(char ** args);
+void prompt();
 
 int main(){
   char buffer[256];
   char modBuff[256];
   while (1) {
-    //Prompt
+    prompt();
     long path_max;
     size_t size;
     char *buf;
@@ -25,9 +26,10 @@ int main(){
     }else{
       size = path_max;
     }
-    ptr = getcwd(buf,size);
-    printf("%s/$ ",ptr);
-    //free(buf);
+    //ptr = strcat("/",getcwd(buf,size));
+    //printf("%s\n",strsep(&ptr,getenv("HOME")));
+    //printf()
+    //free(ptr);
     fgets(buffer,255,stdin);
     sscanf(buffer, "%[^\n]", modBuff);
     char* cmds[16];
@@ -62,4 +64,21 @@ void cd(char ** args){
   else{
     chdir(args[1]);
   }
+}
+
+//Takes no arguments, returns void, and prints the prompt.
+void prompt(){
+  long path_max;
+  size_t size = 256;
+  char *buf;
+  char *ptr;
+  printf("%s\n",getcwd(buf,size));
+  ptr = getcwd(buf,size);
+  /*
+  while (strcmp(strsep(&ptr,"/"),getenv("HOME"))!=0) {
+    printf("hi");
+  }
+  */
+  printf("~/%s/$ ",ptr);
+  free(ptr);
 }
