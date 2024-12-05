@@ -52,6 +52,10 @@ int main(){
         stdoutRedirect(args);
         continue;
       }
+      if (testStdinRedirect(args)) {
+        stdinRedirect(args);
+        continue;
+      }
       pid_t p = fork();
       if (p < 0) {
         perror("fork failed\n");

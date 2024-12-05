@@ -2,5 +2,6 @@
 #define REDIRECTION_H
 int testStdoutRedirect(char** args);
 int testStdinRedirect(char** args);
-void stdoutRedirect(char** args);;
+void stdoutRedirect(char** args);
+void stdinRedirect(char** args);
 #endif

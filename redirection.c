@@ -35,12 +35,35 @@ void stdoutRedirect(char** args) {
     }
     printf("redirIndex = %d\n", redirIndex);
     args[redirIndex] = NULL;
-    int fd1 = open(args[redirIndex + 1], O_WRONLY);
+    int file = open(args[redirIndex + 1], O_WRONLY);
     int stdout = STDOUT_FILENO;
     int backup_stdout = dup(stdout);
-    dup2(fd1, stdout);
+    dup2(file, stdout);
     execvp(args[0], args);
     dup2(backup_stdout, stdout);
+  } else {
+    int status;
+    wait(&status);
+  }
+}
+
+void stdinRedirect(char** args) {
+  int p = fork();
+  if (p < 0) {
+    perror("fork failed\n");
+  } else if (p == 0) {
+    int redirIndex = 0;
+    while (strcmp(args[redirIndex],"<") != 0) {
+      redirIndex++;
+    }
+    printf("redirIndex = %d\n", redirIndex);
+    args[redirIndex] = NULL;
+    int file = open(args[redirIndex - 1], O_RDONLY);
+    int stdin = STDIN_FILENO;
+    int backup_stdin = dup(stdin);
+    dup2(file, stdin);
+    execvp(args[0], args);
+    dup2(backup_stdin, stdin);
   } else {
     int status;
     wait(&status);
