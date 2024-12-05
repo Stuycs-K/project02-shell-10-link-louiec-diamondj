@@ -7,13 +7,8 @@
 #include "parse.h"
 
 void cd(char ** args);
-<<<<<<< HEAD
 void piper(char * args);
 void prompt();
-=======
-void prompt();
-void piper(char * args);
->>>>>>> refs/remotes/origin/main
 
 int main(){
   char buffer[256];
@@ -21,10 +16,6 @@ int main(){
   char pipeBuff[256];
   while (1) {
     prompt();
-<<<<<<< HEAD
-=======
-    fflush(stdout);
->>>>>>> refs/remotes/origin/main
     fgets(buffer,255,stdin);
     sscanf(buffer, "%[^\n]", modBuff);
     strcpy(pipeBuff,modBuff);
@@ -67,8 +58,6 @@ void cd(char ** args){
   }
 }
 
-<<<<<<< HEAD
-=======
 //Takes no arguments, returns void, and prints the prompt.
 void prompt(){
   long path_max;
@@ -84,7 +73,6 @@ void prompt(){
   //free(ptr);
 }
 
->>>>>>> refs/remotes/origin/main
 /*Takes a string, returns void
 Separates the user inputted string by the pipe, then popens the first command in read mode to get the output and popens the second command in write mode to give in the output from first command*/
 void piper(char * args){
