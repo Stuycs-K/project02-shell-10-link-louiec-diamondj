@@ -5,6 +5,7 @@
 #include <sys/wait.h>
 #include <fcntl.h>
 #include "parse.h"
+#include "redirection.h"
 
 void cd(char ** args);
 void piper(char * args);
@@ -31,6 +32,14 @@ int main(){
       if(strcmp("exit",args[0])==0) exit(0);
       if(strcmp("cd",args[0])==0){
         cd(args);
+        continue;
+      }
+      if (testStdoutRedirect(args)) {
+        stdoutRedirect(args);
+        continue;
+      }
+      if (testStdinRedirect(args)) {
+        stdinRedirect(args);
         continue;
       }
       pid_t p = fork();
