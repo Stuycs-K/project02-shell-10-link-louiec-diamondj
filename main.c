@@ -7,11 +7,8 @@
 #include "parse.h"
 
 void cd(char ** args);
-<<<<<<< HEAD
 void prompt();
-=======
 void piper(char * args);
->>>>>>> 09a41444e2a2ab70be7e74fa3fd6e4fc3f0e65e8
 
 int main(){
   char buffer[256];
@@ -19,22 +16,7 @@ int main(){
   char pipeBuff[256];
   while (1) {
     prompt();
-    long path_max;
-    size_t size;
-    char *buf;
-    char *ptr;
-    path_max = pathconf(".", _PC_PATH_MAX);
-    if (path_max == -1){
-      size = 1024;
-    }else if (path_max > 10240){
-      size = 10240;
-    }else{
-      size = path_max;
-    }
-    //ptr = strcat("/",getcwd(buf,size));
-    //printf("%s\n",strsep(&ptr,getenv("HOME")));
-    //printf()
-    //free(ptr);
+    fflush(stdout);
     fgets(buffer,255,stdin);
     sscanf(buffer, "%[^\n]", modBuff);
     strcpy(pipeBuff,modBuff);
@@ -76,22 +58,20 @@ void cd(char ** args){
   }
 }
 
-
 //Takes no arguments, returns void, and prints the prompt.
 void prompt(){
   long path_max;
   size_t size = 256;
   char *buf;
   char *ptr;
-  printf("%s\n",getcwd(buf,size));
+  //ptr = strcat("/",getcwd(buf,size));
+  //printf("%s\n",strsep(&ptr,getenv("HOME")));
   ptr = getcwd(buf,size);
-  /*
-  while (strcmp(strsep(&ptr,"/"),getenv("HOME"))!=0) {
-    printf("hi");
-  }
-  */
   printf("~/%s/$ ",ptr);
   free(ptr);
+  //printf()
+  //free(ptr);
+}
 
 /*Takes a string, returns void
 Separates the user inputted string by the pipe, then popens the first command in read mode to get the output and popens the second command in write mode to give in the output from first command*/
