@@ -35,7 +35,7 @@ void stdoutRedirect(char** args) {
     }
     printf("redirIndex = %d\n", redirIndex);
     args[redirIndex] = NULL;
-    int file = open(args[redirIndex + 1], O_WRONLY);
+    int file = open(args[redirIndex + 1], O_WRONLY | O_TRUNC);
     int stdout = STDOUT_FILENO;
     int backup_stdout = dup(stdout);
     dup2(file, stdout);
@@ -58,10 +58,11 @@ void stdinRedirect(char** args) {
     }
     printf("redirIndex = %d\n", redirIndex);
     args[redirIndex] = NULL;
-    int file = open(args[redirIndex - 1], O_RDONLY);
+    FILE* file = fopen(args[redirIndex + 1], "r");
     int stdin = STDIN_FILENO;
     int backup_stdin = dup(stdin);
-    dup2(file, stdin);
+    dup2(fileno(file), stdin);
+    fclose(file);
     execvp(args[0], args);
     dup2(backup_stdin, stdin);
   } else {
