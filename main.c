@@ -5,10 +5,9 @@
 #include <sys/wait.h>
 #include <fcntl.h>
 #include "parse.h"
-
-void cd(char ** args);
-void piper(char * args);
-void prompt();
+#include "pipe.h"
+#include "directory.h"
+#include "redirection.h"
 
 int main(){
   char buffer[256];
@@ -45,46 +44,4 @@ int main(){
     }
   }
   return 0;
-}
-
-//Takes an array of strings, returns void, and changes current directory when you type cd
-void cd(char ** args){
-  const char * home = getenv("HOME");
-  if(args[1] == NULL){
-    chdir(home);
-  }
-  else{
-    chdir(args[1]);
-  }
-}
-
-/*Takes a string, returns void
-Separates the user inputted string by the pipe, then popens the first command in read mode to get the output and popens the second command in write mode to give in the output from first command*/
-void piper(char * args){
-  char * second_cmd = args;
-  char * first_cmd = strsep(&second_cmd,"|");
-  FILE * input = popen(first_cmd,"r");
-  char data[256];
-  FILE * file = popen(second_cmd,"w");
-  while(fgets(data,sizeof(data),input) != NULL){
-    fputs(data,file);
-  }
-  fclose(input);
-  fclose(file);
-}
-
-//Takes no arguments, returns void, and prints the prompts by getting cwd then moving to the part after the home directory.
-void prompt(){
-  char buff[256];
-  char * temp;
-  getcwd(buff,sizeof(buff));
-  const char * home = getenv("HOME");
-  if(strlen(buff) < strlen(home)){
-    printf("%s",buff);
-  }
-  else{
-    temp = buff;
-    temp += strlen(home);
-    printf("~%s$ ",temp);
-  }
 }
