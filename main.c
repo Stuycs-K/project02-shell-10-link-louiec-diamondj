@@ -17,7 +17,10 @@ int main(){
   char pipeBuff[256];
   while (1) {
     prompt();
-    fgets(buffer,255,stdin);
+    if (fgets(buffer,255,stdin) == NULL) {
+      printf("\n");
+      exit(0);
+    }
     sscanf(buffer, "%[^\n]", modBuff);
     strcpy(pipeBuff,modBuff);
     char* cmds[16];
@@ -46,7 +49,7 @@ int main(){
       if (p < 0) {
         perror("fork failed\n");
       } else if (p == 0) {
-        execvp(args[0], args);
+        if (execvp(args[0], args) == -1) exit(1);
       } else {
         int status;
         wait(&status);
@@ -65,21 +68,6 @@ void cd(char ** args){
   else{
     chdir(args[1]);
   }
-}
-
-//Takes no arguments, returns void, and prints the prompt.
-void prompt(){
-  long path_max;
-  size_t size = 256;
-  char *buf;
-  char *ptr;
-  //ptr = strcat("/",getcwd(buf,size));
-  //printf("%s\n",strsep(&ptr,getenv("HOME")));
-  ptr = getcwd(buf,size);
-  printf("~/%s/$ ",ptr);
-  free(ptr);
-  //printf()
-  //free(ptr);
 }
 
 /*Takes a string, returns void
