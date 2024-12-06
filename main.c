@@ -58,21 +58,6 @@ void cd(char ** args){
   }
 }
 
-//Takes no arguments, returns void, and prints the prompt.
-void prompt(){
-  long path_max;
-  size_t size = 256;
-  char *buf;
-  char *ptr;
-  //ptr = strcat("/",getcwd(buf,size));
-  //printf("%s\n",strsep(&ptr,getenv("HOME")));
-  ptr = getcwd(buf,size);
-  printf("~/%s/$ ",ptr);
-  free(ptr);
-  //printf()
-  //free(ptr);
-}
-
 /*Takes a string, returns void
 Separates the user inputted string by the pipe, then popens the first command in read mode to get the output and popens the second command in write mode to give in the output from first command*/
 void piper(char * args){
@@ -88,13 +73,18 @@ void piper(char * args){
   fclose(file);
 }
 
-//Takes no arguments, returns void, and prints the prompt.
+//Takes no arguments, returns void, and prints the prompts by getting cwd then moving to the part after the home directory.
 void prompt(){
   char buff[256];
   char * temp;
   getcwd(buff,sizeof(buff));
   const char * home = getenv("HOME");
-  temp = buff;
-  temp += strlen(home);
-  printf("~%s$ ",temp);
+  if(strlen(buff) < strlen(home)){
+    printf("%s",buff);
+  }
+  else{
+    temp = buff;
+    temp += strlen(home);
+    printf("~%s$ ",temp);
+  }
 }
