@@ -85,13 +85,18 @@ void piper(char * args){
   fclose(file);
 }
 
-//Takes no arguments, returns void, and prints the prompt.
+//Takes no arguments, returns void, and prints the prompts by getting cwd then moving to the part after the home directory.
 void prompt(){
   char buff[256];
   char * temp;
   getcwd(buff,sizeof(buff));
   const char * home = getenv("HOME");
-  temp = buff;
-  temp += strlen(home);
-  printf("~%s$ ",temp);
+  if(strlen(buff) < strlen(home)){
+    printf("%s",buff);
+  }
+  else{
+    temp = buff;
+    temp += strlen(home);
+    printf("~%s$ ",temp);
+  }
 }
