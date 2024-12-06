@@ -15,7 +15,10 @@ int main(){
   char pipeBuff[256];
   while (1) {
     prompt();
-    fgets(buffer,255,stdin);
+    if (fgets(buffer,255,stdin) == NULL) {
+      printf("\n");
+      exit(0);
+    }
     sscanf(buffer, "%[^\n]", modBuff);
     strcpy(pipeBuff,modBuff);
     char* cmds[16];
@@ -32,11 +35,19 @@ int main(){
         cd(args);
         continue;
       }
+      if (testStdoutRedirect(args)) {
+        stdoutRedirect(args);
+        continue;
+      }
+      if (testStdinRedirect(args)) {
+        stdinRedirect(args);
+        continue;
+      }
       pid_t p = fork();
       if (p < 0) {
         perror("fork failed\n");
       } else if (p == 0) {
-        execvp(args[0], args);
+        if (execvp(args[0], args) == -1) exit(1);
       } else {
         int status;
         wait(&status);
