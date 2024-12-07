@@ -14,12 +14,12 @@ int main(){
   char modBuff[256];
   char pipeBuff[256];
   while (1) {
-    prompt();
     if (fgets(buffer,255,stdin) == NULL) {
       printf("\n");
       exit(0);
     }
-    sscanf(buffer, "%[^\n]", modBuff);
+    prompt();
+    sscanf(buffer, "%[^\n\r]", modBuff);
     strcpy(pipeBuff,modBuff);
     char* cmds[16];
     char* args[16];

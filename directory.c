@@ -28,4 +28,5 @@ void prompt(){
     temp += strlen(home);
     printf("~%s$ ",temp);
   }
+  fflush(stdout);
 }

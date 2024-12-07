@@ -33,7 +33,6 @@ void stdoutRedirect(char** args) {
     while (strcmp(args[redirIndex],">") != 0) {
       redirIndex++;
     }
-    printf("redirIndex = %d\n", redirIndex);
     args[redirIndex] = NULL;
     int file = open(args[redirIndex + 1], O_WRONLY | O_TRUNC);
     int stdout = STDOUT_FILENO;
@@ -56,7 +55,6 @@ void stdinRedirect(char** args) {
     while (strcmp(args[redirIndex],"<") != 0) {
       redirIndex++;
     }
-    printf("redirIndex = %d\n", redirIndex);
     args[redirIndex] = NULL;
     FILE* file = fopen(args[redirIndex + 1], "r");
     int stdin = STDIN_FILENO;
