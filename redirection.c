@@ -10,6 +10,7 @@
 #include <dirent.h>
 #include <sys/wait.h>
 
+// takes an array of arguments, returns 1 if ">" is found, 0 otherwise
 int testStdoutRedirect(char** args) {
   for (int i = 0; args[i] != NULL; i++) {
     if (strcmp(args[i], ">") == 0) return 1;
@@ -17,6 +18,7 @@ int testStdoutRedirect(char** args) {
   return 0;
 }
 
+// takes an array of arguments, returns 1 if "<" is found, 0 otherwise
 int testStdinRedirect(char** args) {
   for (int i = 0; args[i] != NULL; i++) {
     if (strcmp(args[i], "<") == 0) return 1;
@@ -24,6 +26,7 @@ int testStdinRedirect(char** args) {
   return 0;
 }
 
+// takes an array of arguments known to have ">" and runs the command, redirection file output as necessary
 void stdoutRedirect(char** args) {
   int p = fork();
   if (p < 0) {
@@ -46,6 +49,7 @@ void stdoutRedirect(char** args) {
   }
 }
 
+// takes an array of arguments known to have "<" and runs the command, redirecting input and necessary
 void stdinRedirect(char** args) {
   int p = fork();
   if (p < 0) {
