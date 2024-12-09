@@ -9,6 +9,8 @@
 #include "directory.h"
 #include "redirection.h"
 
+// main file
+// loops displaying prompt and running user input until stopped
 int main(){
   char buffer[256];
   char modBuff[256];
